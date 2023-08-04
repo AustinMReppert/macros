@@ -66,10 +66,10 @@ pub enum AddFood {
 
 pub struct Tab {
     title: String,
-    tabs: Tabs,
+    tab_type: TabType,
 }
 
-pub enum Tabs {
+pub enum TabType {
     Feed,
     Food,
 }
@@ -119,11 +119,11 @@ impl Application for Macros {
                 tabs: vec![
                     Tab {
                         title: String::from("Feed"),
-                        tabs: Tabs::Feed,
+                        tab_type: TabType::Feed,
                     },
                     Tab {
                         title: String::from("Food"),
-                        tabs: Tabs::Food,
+                        tab_type: TabType::Food,
                     },
                 ],
                 current_tab: 0,
@@ -394,9 +394,9 @@ impl Application for Macros {
 
 impl Macros {
     fn main_content(&self) -> Element<Message> {
-        match self.tabs[self.current_tab].tabs {
-            Tabs::Feed => self.feed(),
-            Tabs::Food => {
+        match self.tabs[self.current_tab].tab_type {
+            TabType::Feed => self.feed(),
+            TabType::Food => {
                 if self.adding_food {
                     self.add_food() //.explain(Color::new(1.0, 0.0, 0.0, 1.0))
                 } else {
