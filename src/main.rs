@@ -66,16 +66,16 @@ pub enum AddFood {
 
 pub struct Tab {
     title: String,
-    tabs: Tabs,
+    tabs: TabType,
 }
 
-pub enum Tabs {
+pub enum TabType {
     Feed,
     Food,
 }
 
 struct Macros {
-    tabs: Vec<Tab>,
+    tab_type: Vec<Tab>,
     current_tab: usize,
     search_text: String,
     adding_food: bool,
@@ -116,14 +116,14 @@ impl Application for Macros {
         feed.sort_by_key(|entry| entry.date);
         (
             Macros {
-                tabs: vec![
+                tab_type: vec![
                     Tab {
                         title: String::from("Feed"),
-                        tabs: Tabs::Feed,
+                        tabs: TabType::Feed,
                     },
                     Tab {
                         title: String::from("Food"),
-                        tabs: Tabs::Food,
+                        tabs: TabType::Food,
                     },
                 ],
                 current_tab: 0,
@@ -151,7 +151,7 @@ impl Application for Macros {
     fn update(&mut self, message: Message) -> Command<Self::Message> {
         match message {
             Message::ChangeTab(index) => {
-                if index < self.tabs.len() {
+                if index < self.tab_type.len() {
                     self.current_tab = index;
                 } else {
                     panic!("Invalid tab index")
@@ -373,7 +373,7 @@ impl Application for Macros {
     fn view(&self) -> Element<Message> {
         Column::with_children(vec![
             TabBar::with_tab_labels(
-                self.tabs
+                self.tab_type
                     .iter()
                     .enumerate()
                     .map(|(index, tab)| (index, TabLabel::Text(tab.title.clone())))
@@ -394,9 +394,9 @@ impl Application for Macros {
 
 impl Macros {
     fn main_content(&self) -> Element<Message> {
-        match self.tabs[self.current_tab].tabs {
-            Tabs::Feed => self.feed(),
-            Tabs::Food => {
+        match self.tab_type[self.current_tab].tabs {
+            TabType::Feed => self.feed(),
+            TabType::Food => {
                 if self.adding_food {
                     self.add_food() //.explain(Color::new(1.0, 0.0, 0.0, 1.0))
                 } else {
