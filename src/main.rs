@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use chrono::{DateTime, Local, NaiveDateTime, TimeZone, Utc};
 use home::home_dir;
 use iced::alignment::{Horizontal, Vertical};
